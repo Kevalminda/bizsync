@@ -1,0 +1,39 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Google OAuth credentials and tokens
+credentials.json
+authorized_user.json
+token.json
+
+# Local BizSync data
+logs/
+configs/saved/
+
+# Temporary uploads
+.temp_uploads/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+# Development backups / inspection artifacts
+*.bak
+*.bak2
+*.bak3
+match.txt
+normalization_inspect.txt
+schema.txt
+sheets_inspect.txt
+sync_engine_inspect.txt
+sync_inspect.txt

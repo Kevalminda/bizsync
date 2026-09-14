@@ -1,0 +1,34 @@
+{
+  "name": "Inventory Management",
+
+  "source_type": "csv",
+
+  "target_fields": [
+    "Product Code",
+    "Product Name",
+    "Warehouse",
+    "Current Stock",
+    "Reorder Level",
+    "Last Updated"
+  ],
+
+  "required_fields": [
+    "Product Code",
+    "Product Name",
+    "Current Stock"
+  ],
+
+  "unique_key_fields": [
+    "Product Code",
+    "Warehouse"
+  ],
+
+  "source_to_target": {
+    "product_id": "Product Code",
+    "name": "Product Name",
+    "location": "Warehouse",
+    "stock": "Current Stock",
+    "minimum_stock": "Reorder Level",
+    "updated": "Last Updated"
+  }
+}

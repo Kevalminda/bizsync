@@ -1,0 +1,4 @@
+product_id,name,location,stock,minimum_stock,updated
+SKU-A01,Premium Chips,Indore,120,30,2026-09-13
+SKU-B04,Masala Chips,Bhopal,80,20,2026-09-13
+SKU-C08,Cheese Chips,Indore,15,25,2026-09-13

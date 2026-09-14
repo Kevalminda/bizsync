@@ -1,0 +1,32 @@
+{
+  "name": "Generic Business Orders",
+
+  "source_type": "csv",
+
+  "target_fields": [
+    "Order No.",
+    "SKU ID",
+    "Product Name",
+    "Quantity",
+    "Date"
+  ],
+
+  "required_fields": [
+    "Order No.",
+    "Product Name",
+    "Quantity"
+  ],
+
+  "unique_key_fields": [
+    "Order No.",
+    "SKU ID"
+  ],
+
+  "source_to_target": {
+    "order_number": "Order No.",
+    "item_code": "SKU ID",
+    "item_name": "Product Name",
+    "qty_sold": "Quantity",
+    "sale_date": "Date"
+  }
+}

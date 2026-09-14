@@ -1,0 +1,538 @@
+/* ============================================================
+   BizSync - Responsive Design
+   ============================================================ */
+
+
+/* ============================================================
+   TABLET / SMALL LAPTOP
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .content-viewport {
+    padding: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .mapping-row {
+    grid-template-columns:
+      180px
+      minmax(200px, 1fr)
+      150px;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  /*
+   * Main application layout
+   */
+
+  #app {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+
+  /*
+   * Sidebar becomes a top navigation area
+   */
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+
+    border-right: none;
+    border-bottom:
+      1px solid
+      var(--border-subtle);
+
+    padding: 0.75rem 1rem;
+  }
+
+
+  .nav-list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    gap: 0.4rem;
+
+    scrollbar-width: thin;
+  }
+
+
+  .nav-list > * {
+    flex: 0 0 auto;
+  }
+
+
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+
+  .content-viewport {
+    padding: 1rem;
+  }
+
+
+  /*
+   * Dashboard / settings grids
+   */
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  /*
+   * Common two-column layouts
+   */
+
+  .dashboard-grid,
+  .settings-grid,
+  .overview-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Inline multi-column cards created
+   * by the dashboard/settings components.
+   */
+
+  .card > div[style*="grid-template-columns"] {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Mapping rows become stacked.
+   */
+
+  .mapping-row {
+    grid-template-columns:
+      1fr;
+
+    gap: 0.65rem;
+
+    align-items: stretch;
+  }
+
+
+  .mapping-target-name {
+    justify-content: flex-start;
+  }
+
+
+  .mapping-arrow {
+    display: none;
+  }
+
+
+  .mapping-select {
+    width: 100%;
+  }
+
+
+  /*
+   * Tables should scroll instead of
+   * breaking the page width.
+   */
+
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  .data-table {
+    min-width: 760px;
+  }
+
+
+  /*
+   * Preview tabs
+   */
+
+  .preview-tabs {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 0.5rem;
+  }
+
+
+  .preview-tab {
+    min-width: 0;
+  }
+
+
+  /*
+   * Buttons and action areas
+   */
+
+  .wizard-actions {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+  /*
+   * Overall spacing
+   */
+
+  .content-viewport {
+    padding: 0.75rem;
+  }
+
+
+  .header {
+    padding: 0.7rem 0.75rem;
+  }
+
+
+  /*
+   * Sidebar / navigation
+   */
+
+  .sidebar {
+    padding:
+      0.6rem
+      0.65rem;
+  }
+
+
+  .nav-list {
+    gap: 0.3rem;
+  }
+
+
+  /*
+   * Cards
+   */
+
+  .card {
+    padding: 0.85rem;
+    border-radius: 10px;
+  }
+
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+
+  /*
+   * Typography
+   */
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+
+  .card-subtitle {
+    font-size: 0.76rem;
+  }
+
+
+  /*
+   * Stats
+   */
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+
+  .stat-card {
+    padding: 0.85rem;
+  }
+
+
+  /*
+   * Dashboard hero
+   */
+
+  .dashboard-hero,
+  .hero-card {
+    padding: 1rem;
+  }
+
+
+  /*
+   * Generic grids generated inline
+   */
+
+  .card > div[style*="grid-template-columns"],
+  .stats-grid,
+  .mapping-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Forms
+   */
+
+  .form-group {
+    width: 100%;
+  }
+
+
+  .form-input,
+  .form-select,
+  textarea,
+  input[type="text"],
+  input[type="url"],
+  input[type="file"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+
+  /*
+   * Buttons
+   */
+
+  .btn {
+    max-width: 100%;
+  }
+
+
+  .btn-lg {
+    width: 100%;
+  }
+
+
+  /*
+   * Wizard footer/action areas
+   */
+
+  .wizard-actions,
+  .wizard-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+
+  .wizard-actions .btn,
+  .wizard-footer .btn {
+    width: 100%;
+  }
+
+
+  /*
+   * Preview tabs
+   */
+
+  .preview-tabs {
+    grid-template-columns: 1fr;
+  }
+
+
+  /*
+   * Preview / comparison table
+   */
+
+  .data-table {
+    min-width: 700px;
+    font-size: 0.76rem;
+  }
+
+
+  /*
+   * Sync result cards
+   */
+
+  .result-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Configuration cards
+   */
+
+  .config-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Search/filter controls
+   */
+
+  #history-search-input,
+  #history-status-filter {
+    width: 100%;
+  }
+
+
+  /*
+   * History filter container
+   */
+
+  .history-filters {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Avoid forcing large horizontal
+   * content inside modal/detail areas.
+   */
+
+  #history-detail-overlay > div {
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+  }
+
+
+  /*
+   * Modal grids
+   */
+
+  #history-detail-overlay
+    div[style*="grid-template-columns"] {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /*
+   * Long URLs/files should wrap.
+   */
+
+  a,
+  td,
+  th {
+    overflow-wrap: anywhere;
+  }
+
+
+  /*
+   * Mapping field names and badges.
+   */
+
+  .mapping-target-name {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+
+  /*
+   * Configuration save row.
+   */
+
+  #config-name-input {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+
+  /*
+   * Prevent viewport overflow from
+   * oversized content.
+   */
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+  .content-viewport {
+    padding: 0.55rem;
+  }
+
+
+  .sidebar {
+    padding: 0.5rem;
+  }
+
+
+  .header {
+    padding: 0.6rem;
+  }
+
+
+  .card {
+    padding: 0.7rem;
+  }
+
+
+  .stat-value {
+    font-size: 1.25rem;
+  }
+
+
+  .stat-label {
+    font-size: 0.68rem;
+  }
+
+
+  .badge {
+    font-size: 0.68rem;
+  }
+
+
+  .btn {
+    font-size: 0.75rem;
+  }
+
+}

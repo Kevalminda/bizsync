@@ -1,0 +1,4 @@
+Order_Number,Item_Code,Item_Name,Qty_Sold,Sale_Date
+INV1001,SKU-A01,Premium Chips,2,2026-09-10
+INV1002,SKU-B04,Masala Chips,3,2026-09-10
+INV1003,SKU-C08,Cheese Chips,1,2026-09-11

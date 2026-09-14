@@ -1,0 +1,87 @@
+/* Diff Preview & Category Tabs CSS */
+
+.preview-tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.preview-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.preview-tab:hover {
+  background-color: #2a374e;
+  color: var(--text-primary);
+}
+
+.preview-tab.active {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  color: #818cf8;
+}
+
+.tab-count {
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.preview-tab.active .tab-count {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+/* Category Pill Badges */
+.pill-new {
+  background-color: var(--accent-green-bg);
+  color: #34d399;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.pill-updated {
+  background-color: var(--accent-amber-bg);
+  color: #fbbf24;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.pill-unchanged {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.pill-skipped {
+  background-color: var(--accent-rose-bg);
+  color: #f87171;
+  border: 1px solid rgba(225, 29, 72, 0.3);
+}
+
+/* Diff Cell Highlights */
+.cell-diff {
+  background-color: rgba(217, 119, 6, 0.2) !important;
+  color: #fbbf24 !important;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.4rem;
+}
+
+.diff-arrow {
+  margin: 0 0.25rem;
+  color: var(--text-muted);
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Flipkart CSV",
+  "source_type": "csv",
+  "source_to_target": {
+    "SKU": "SKU ID",
+    "Order Id": "Order No.",
+    "Product": "Product Name",
+    "Ordered On": "Date",
+    "Quantity": "Quantity"
+  },
+  "unique_key_fields": ["Order No.", "SKU ID"]
+}
