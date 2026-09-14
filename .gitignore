@@ -1,39 +1,30 @@
-# Python virtual environment
+# Python
 .venv/
-
-# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Environment variables / secrets
+# Environment / secrets
 .env
 .env.*
-
-# Google OAuth credentials and tokens
 credentials.json
 authorized_user.json
 token.json
 
 # Local BizSync data
+.temp_uploads/
 logs/
 configs/saved/
 
-# Temporary uploads
-.temp_uploads/
+# Test/runtime generated files
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
-# OS / editor files
+# IDE / OS
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
-.vscode/
-# Development backups / inspection artifacts
-*.bak
-*.bak2
-*.bak3
-match.txt
-normalization_inspect.txt
-schema.txt
-sheets_inspect.txt
-sync_engine_inspect.txt
-sync_inspect.txt
