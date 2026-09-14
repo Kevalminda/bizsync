@@ -10,7 +10,7 @@ It helps users:
 - normalize inconsistent column names
 - map source fields to target fields
 - use AI assistance for ambiguous mappings
-- compare incoming records with existing Google Sheet data
+- compare records with existing Google Sheet data
 - identify new, updated, unchanged, and skipped records
 - prevent duplicate records
 - maintain synchronization history
@@ -486,50 +486,79 @@ Important security principles:
 
 ---
 
-# 🔒 Privacy & Data Handling
+# 📸 Screenshots
 
-BizSync is primarily designed to run locally.
+The screenshots below show the main BizSync workflow and user interface.
 
-When another user runs BizSync:
+## Dashboard
 
-```text
-Their CSV / Excel
-       ↓
-Their BizSync instance
-       ↓
-Their Google account
-       ↓
-Their Google Sheet
-```
+The BizSync dashboard provides an overview of synchronization activity, including total runs, records added, records updated, skipped records, synchronization health, and recent activity.
 
-Their local synchronization environment is separate from the developer's local environment.
+![BizSync Dashboard](docs/screenshots/dashboard.png)
 
-The GitHub repository does not contain:
+---
 
-- OAuth credentials
-- OAuth refresh tokens
-- Gemini API keys
-- local synchronization history
-- temporary uploads
-- saved private configurations
+## New Synchronization
 
-### Important
+The synchronization wizard guides the user through the workflow from file upload to execution.
 
-Do not commit real:
+![BizSync Upload](docs/screenshots/upload.png)
 
-- customer information
-- financial information
-- order records
-- private business data
-- authentication credentials
+---
 
-Use synthetic/demo data for public examples.
+## Target Field Configuration
 
-### External Services
+Users can define canonical target fields, required fields, and composite unique keys used for record matching.
 
-When Google Sheets or Gemini functionality is used, relevant data may be sent to those services as required by the selected workflow.
+![Target Fields](docs/screenshots/target-fields.png)
 
-Users should understand the data-sharing implications of connected external services before using BizSync with sensitive business information.
+---
+
+## AI-Assisted Field Mapping
+
+BizSync combines deterministic matching with AI assistance for ambiguous column names while exposing confidence levels and mapping reasoning.
+
+![AI-Assisted Mapping](docs/screenshots/ai-mapping.png)
+
+---
+
+## Google Sheets Integration
+
+BizSync connects to the user's Google Sheet and synchronizes structured business records into the selected worksheet.
+
+![Google Sheets Integration](docs/screenshots/google-sheets.png)
+
+---
+
+## Synchronization Preview
+
+Before applying changes, BizSync presents the predicted synchronization impact across NEW, UPDATED, UNCHANGED, and SKIPPED records.
+
+![Synchronization Preview](docs/screenshots/preview.png)
+
+---
+
+## Duplicate Intelligence
+
+Potential duplicates are analyzed using similarity checks and can be surfaced for review before synchronization.
+
+![Duplicate Intelligence](docs/screenshots/duplicate-intelligence.png)
+
+---
+
+## Synchronization Complete
+
+After execution, BizSync reports the synchronization result and provides actions to open the destination sheet or start another synchronization.
+
+![Synchronization Complete](docs/screenshots/execution-complete.png)
+
+---
+
+## Sync History
+
+The history dashboard provides an audit trail of previous synchronization runs and their results.
+
+![Sync History](docs/screenshots/history.png)
 
 ---
 
@@ -611,7 +640,17 @@ bizsync/
 ├── configs/
 │
 ├── docs/
-│   └── ROADMAP.md
+│   ├── ROADMAP.md
+│   └── screenshots/
+│       ├── dashboard.png
+│       ├── upload.png
+│       ├── target-fields.png
+│       ├── ai-mapping.png
+│       ├── google-sheets.png
+│       ├── preview.png
+│       ├── duplicate-intelligence.png
+│       ├── execution-complete.png
+│       └── history.png
 │
 ├── frontend/
 │   ├── css/
@@ -695,7 +734,7 @@ These files are intentionally excluded through `.gitignore`.
 
 # 🤖 Gemini Configuration
 
-AI-assisted mapping and duplicate verification use a Gemini API key supplied through an environment variable.
+AI-assisted field mapping and duplicate verification use a Gemini API key supplied through an environment variable.
 
 Example for Windows PowerShell:
 
@@ -703,7 +742,7 @@ Example for Windows PowerShell:
 $env:GEMINI_API_KEY="YOUR_API_KEY"
 ```
 
-The key should never be hard-coded into application source code or frontend files.
+The API key should never be hard-coded into application source code or frontend files.
 
 ---
 
@@ -820,7 +859,7 @@ Duplicate Protection
 Google Sheets
 ```
 
-A typical marketplace dataset might contain:
+A typical dataset might contain:
 
 ```text
 Order No.
@@ -832,34 +871,6 @@ Date
 ```
 
 The synchronization engine, however, remains configurable and can be adapted to other business datasets.
-
----
-
-# 📸 Screenshots
-
-The project interface includes:
-
-- Dashboard
-- New Synchronization wizard
-- Field configuration
-- AI-assisted mapping
-- Google Sheets connection
-- Synchronization preview
-- Sync history
-- Settings
-
-Screenshots can be added to this section as the project presentation is expanded.
-
-Recommended screenshot order:
-
-```text
-1. Dashboard
-2. Upload / New Sync
-3. AI Mapping
-4. Google Sheets Connection
-5. Preview
-6. Sync History
-```
 
 ---
 
@@ -878,24 +889,6 @@ BizSync is being developed as a practical automation and data-engineering projec
 - Google Sheets automation
 - Auditability
 - Secure local execution
-
----
-
-# 🚧 Roadmap
-
-Planned improvements include:
-
-- Additional destination connectors
-- Additional business-data templates
-- More advanced schema matching
-- Improved duplicate intelligence
-- Scheduled synchronization
-- Enhanced reporting
-- Hosted deployment
-- Multi-user support
-- Additional localization options
-
-See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the current roadmap.
 
 ---
 
@@ -919,7 +912,74 @@ Auditability
 Security-conscious Application Design
 ```
 
-The project was developed as a practical solution rather than a static demonstration, with the synchronization engine tested across local CSV workflows and Google Sheets synchronization scenarios.
+The project was developed as a practical synchronization workflow rather than only a static UI demonstration.
+
+It includes tested synchronization flows for local datasets and Google Sheets, configurable field mapping, duplicate protection, AI-assisted mapping, and synchronization history.
+
+---
+
+# 🔒 Privacy & Data Handling
+
+BizSync is primarily designed to run locally.
+
+When another user runs BizSync:
+
+```text
+Their CSV / Excel
+       ↓
+Their BizSync instance
+       ↓
+Their Google account
+       ↓
+Their Google Sheet
+```
+
+Their local synchronization environment is separate from the developer's local environment.
+
+The GitHub repository intentionally does not contain:
+
+- OAuth credentials
+- OAuth refresh tokens
+- Gemini API keys
+- local synchronization history
+- temporary uploads
+- saved private configurations
+
+### Important
+
+Do not commit real:
+
+- customer information
+- financial information
+- order records
+- private business data
+- authentication credentials
+
+Use synthetic/demo data for public examples.
+
+### External Services
+
+When Google Sheets or Gemini functionality is used, relevant data may be sent to those external services as required by the selected workflow.
+
+Users should understand the data-sharing implications of connected external services before using BizSync with sensitive business information.
+
+---
+
+# 🚧 Roadmap
+
+Planned improvements include:
+
+- Additional destination connectors
+- Additional business-data templates
+- More advanced schema matching
+- Improved duplicate intelligence
+- Scheduled synchronization
+- Enhanced reporting
+- Hosted deployment
+- Multi-user support
+- Additional localization options
+
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the current roadmap.
 
 ---
 
