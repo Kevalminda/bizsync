@@ -31,6 +31,8 @@ jobs:
         run: |
           python -m compileall -q app
 
-      - name: Run test suite
+      - name: Run offline unit tests
         run: |
-          python -m unittest discover -v
+          python -m unittest -v \
+            app.test_api \
+            app.test_duplicate_detector

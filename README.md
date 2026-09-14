@@ -483,12 +483,13 @@ Important security principles:
 - saved private configurations are excluded from Git
 - the project root is not exposed as a static directory
 - development CORS is restricted to trusted local origins
+- public CI does not require private Google OAuth credentials
 
 ---
 
 # 📸 Screenshots
 
-The screenshots below show the main BizSync workflow and user interface.
+The screenshots below demonstrate the main BizSync workflow and interface.
 
 ## Dashboard
 
@@ -590,10 +591,11 @@ The history dashboard provides an audit trail of previous synchronization runs a
 - Responsive UI
 - English / Hindi localization
 
-## Development
+## Development & CI
 
 - Git
 - GitHub
+- GitHub Actions
 - Python virtual environment
 
 ---
@@ -602,6 +604,10 @@ The history dashboard provides an audit trail of previous synchronization runs a
 
 ```text
 bizsync/
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 │
 ├── app/
 │   ├── ai/
@@ -660,9 +666,10 @@ bizsync/
 │
 ├── sample_data/
 │
-├── requirements.txt
+├── .gitignore
+├── LICENSE
 ├── README.md
-└── .gitignore
+└── requirements.txt
 ```
 
 ---
@@ -817,22 +824,64 @@ Open Dashboard or Sync History to review the synchronization result.
 
 # 🧪 Testing
 
-The project contains tests covering areas such as:
+BizSync includes automated offline unit tests and separate integration tests.
 
-- API behavior
-- CSV connectors
-- field mapping
-- normalization
-- comparison logic
-- duplicate detection
-- Google Sheets synchronization
-- duplicate protection
-- synchronization behavior
+## Offline CI Tests
 
-Run the test suite with:
+The public GitHub Actions workflow runs tests that do not require private Google credentials or external account access.
+
+Run the same offline test suite locally with:
 
 ```powershell
-python -m unittest discover
+python -m unittest -v app.test_api app.test_duplicate_detector
+```
+
+These tests cover areas such as:
+
+- API health behavior
+- configuration endpoint behavior
+- sample-data loading
+- field-mapping endpoint behavior
+- duplicate detection
+
+The CI workflow also compiles the Python application before running the tests.
+
+---
+
+## Google Sheets Integration Tests
+
+Google Sheets integration tests require local Google OAuth credentials.
+
+These tests are intentionally not executed in public CI because they require access to a real Google account and spreadsheet.
+
+After configuring local credentials, integration tests can be run locally using the project's Google Sheets test scripts.
+
+Required local files include:
+
+```text
+credentials.json
+authorized_user.json
+```
+
+These files must never be committed to the repository.
+
+---
+
+## Test Architecture
+
+```text
+                         BizSync Tests
+                              │
+                 ┌────────────┴────────────┐
+                 │                         │
+                 ▼                         ▼
+          Offline Unit Tests       Integration Tests
+                 │                         │
+                 ▼                         ▼
+          GitHub Actions CI         Local Environment
+                 │                 + Google OAuth
+                 ▼                 + Google Sheets
+              ✅ Safe CI
 ```
 
 ---
@@ -874,6 +923,54 @@ The synchronization engine, however, remains configurable and can be adapted to 
 
 ---
 
+# 🔒 Privacy & Data Handling
+
+BizSync is primarily designed to run locally.
+
+When another user runs BizSync:
+
+```text
+Their CSV / Excel
+       ↓
+Their BizSync instance
+       ↓
+Their Google account
+       ↓
+Their Google Sheet
+```
+
+Their local synchronization environment is separate from the developer's local environment.
+
+The GitHub repository intentionally does not contain:
+
+- OAuth credentials
+- OAuth refresh tokens
+- Gemini API keys
+- local synchronization history
+- temporary uploads
+- saved private configurations
+- private customer/business records
+
+### Important
+
+Do not commit real:
+
+- customer information
+- financial information
+- order records
+- private business data
+- authentication credentials
+
+Use synthetic/demo data for public examples.
+
+### External Services
+
+When Google Sheets or Gemini functionality is used, relevant data may be sent to those external services as required by the selected workflow.
+
+Users should understand the data-sharing implications of connected external services before using BizSync with sensitive business information.
+
+---
+
 # 🎯 Project Goals
 
 BizSync is being developed as a practical automation and data-engineering project focused on:
@@ -910,58 +1007,26 @@ Duplicate Prevention
 Auditability
       +
 Security-conscious Application Design
+      +
+Automated CI Testing
 ```
 
 The project was developed as a practical synchronization workflow rather than only a static UI demonstration.
 
-It includes tested synchronization flows for local datasets and Google Sheets, configurable field mapping, duplicate protection, AI-assisted mapping, and synchronization history.
+It includes:
 
----
-
-# 🔒 Privacy & Data Handling
-
-BizSync is primarily designed to run locally.
-
-When another user runs BizSync:
-
-```text
-Their CSV / Excel
-       ↓
-Their BizSync instance
-       ↓
-Their Google account
-       ↓
-Their Google Sheet
-```
-
-Their local synchronization environment is separate from the developer's local environment.
-
-The GitHub repository intentionally does not contain:
-
-- OAuth credentials
-- OAuth refresh tokens
-- Gemini API keys
-- local synchronization history
-- temporary uploads
-- saved private configurations
-
-### Important
-
-Do not commit real:
-
-- customer information
-- financial information
-- order records
-- private business data
-- authentication credentials
-
-Use synthetic/demo data for public examples.
-
-### External Services
-
-When Google Sheets or Gemini functionality is used, relevant data may be sent to those external services as required by the selected workflow.
-
-Users should understand the data-sharing implications of connected external services before using BizSync with sensitive business information.
+- configurable target schemas
+- deterministic and AI-assisted mapping
+- confidence-based mapping safety
+- record-level synchronization logic
+- unique-key protection
+- duplicate intelligence
+- Google Sheets integration
+- saved configurations
+- synchronization history
+- responsive UI
+- bilingual interface
+- automated CI verification
 
 ---
 
@@ -999,4 +1064,6 @@ https://github.com/Kevalminda/bizsync
 
 # 📄 License
 
-License information can be added here before distributing BizSync for broader reuse.
+BizSync is released under the MIT License.
+
+See [`LICENSE`](LICENSE) for the full license text.

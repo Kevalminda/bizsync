@@ -8,11 +8,12 @@ from fastapi.staticfiles import StaticFiles
 from app.api.routes import configs, history, sheets, sync
 
 
-# ---------------------------------------------------------
+# =========================================================
 # PATHS
-# ---------------------------------------------------------
+# =========================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 FRONTEND_DIR = PROJECT_ROOT / "frontend"
 FRONTEND_CSS_DIR = FRONTEND_DIR / "css"
 FRONTEND_JS_DIR = FRONTEND_DIR / "js"
@@ -20,9 +21,9 @@ SAMPLE_DATA_DIR = PROJECT_ROOT / "sample_data"
 FAVICON_PATH = FRONTEND_DIR / "favicon.svg"
 
 
-# ---------------------------------------------------------
-# APP
-# ---------------------------------------------------------
+# =========================================================
+# APPLICATION
+# =========================================================
 
 app = FastAPI(
     title="BizSync Gateway & Web Application",
@@ -31,11 +32,11 @@ app = FastAPI(
 )
 
 
-# ---------------------------------------------------------
+# =========================================================
 # CORS
-# ---------------------------------------------------------
-# Development-safe local origins only.
-# Do NOT use allow_origins=["*"] together with credentials.
+# =========================================================
+# Local development origins only.
+# Do not use allow_origins=["*"] with credentials.
 
 app.add_middleware(
     CORSMiddleware,
@@ -58,12 +59,11 @@ app.add_middleware(
 )
 
 
-# ---------------------------------------------------------
-# STATIC FRONTEND FILES
-# ---------------------------------------------------------
+# =========================================================
+# FRONTEND STATIC FILES
+# =========================================================
 # Only explicitly required frontend directories are exposed.
-# The project root, credentials, .env files, logs, etc. are
-# intentionally NOT mounted as static directories.
+# The project root is NOT mounted.
 
 if FRONTEND_CSS_DIR.exists():
     app.mount(
@@ -80,9 +80,9 @@ if FRONTEND_JS_DIR.exists():
     )
 
 
-# ---------------------------------------------------------
+# =========================================================
 # FAVICON
-# ---------------------------------------------------------
+# =========================================================
 
 @app.get("/favicon.svg", include_in_schema=False)
 def favicon():
@@ -95,21 +95,20 @@ def favicon():
     )
 
 
-# ---------------------------------------------------------
-# SAMPLE DATA
-# ---------------------------------------------------------
+# =========================================================
+# SAMPLE DATA INFO
+# =========================================================
 
 @app.get("/sample_data")
 def sample_data():
     return {
         "available": SAMPLE_DATA_DIR.exists(),
-        "directory": str(SAMPLE_DATA_DIR),
     }
 
 
-# ---------------------------------------------------------
+# =========================================================
 # HEALTH CHECK
-# ---------------------------------------------------------
+# =========================================================
 
 @app.get("/api/health")
 def health_check():
@@ -125,19 +124,19 @@ def health_check():
     }
 
 
-# ---------------------------------------------------------
+# =========================================================
 # API ROUTERS
-# ---------------------------------------------------------
+# =========================================================
+# These were missing from the app instance seen by the tests.
 
-app.include_router(sync.router, prefix="/api")
-app.include_router(sheets.router, prefix="/api")
-app.include_router(configs.router, prefix="/api")
-app.include_router(history.router, prefix="/api")
+app.include_router(sync.router)
+app.include_router(sheets.router)
+app.include_router(configs.router)
+app.include_router(history.router)
 
-
-# ---------------------------------------------------------
-# ROOT WEB APP
-# ---------------------------------------------------------
+# =========================================================
+# FRONTEND ENTRY POINT
+# =========================================================
 
 @app.get("/", include_in_schema=False)
 def serve_frontend():
