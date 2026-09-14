@@ -2,6 +2,8 @@
 
 > Configurable business data synchronization engine that transforms CSV/Excel exports into structured, safely synchronized records in Google Sheets.
 
+[![BizSync CI](https://github.com/Kevalminda/bizsync/actions/workflows/ci.yml/badge.svg)](https://github.com/Kevalminda/bizsync/actions/workflows/ci.yml)
+
 BizSync is a configurable business-data synchronization tool built for recurring CSV/Excel workflows.
 
 It helps users:
@@ -484,6 +486,7 @@ Important security principles:
 - the project root is not exposed as a static directory
 - development CORS is restricted to trusted local origins
 - public CI does not require private Google OAuth credentials
+- credentials and API keys are never stored in frontend source code
 
 ---
 
@@ -580,6 +583,7 @@ The history dashboard provides an audit trail of previous synchronization runs a
 ## AI
 
 - Gemini
+- Google Gen AI Python SDK
 - Hybrid deterministic + AI-assisted field mapping
 - AI-assisted duplicate verification
 
@@ -669,7 +673,8 @@ bizsync/
 ├── .gitignore
 ├── LICENSE
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── ...
 ```
 
 ---
@@ -741,7 +746,7 @@ These files are intentionally excluded through `.gitignore`.
 
 # 🤖 Gemini Configuration
 
-AI-assisted field mapping and duplicate verification use a Gemini API key supplied through an environment variable.
+AI-assisted field mapping and duplicate verification use the Google Gen AI Python SDK with a Gemini API key supplied through an environment variable.
 
 Example for Windows PowerShell:
 
@@ -836,7 +841,7 @@ Run the same offline test suite locally with:
 python -m unittest -v app.test_api app.test_duplicate_detector
 ```
 
-These tests cover areas such as:
+These tests cover:
 
 - API health behavior
 - configuration endpoint behavior
@@ -920,54 +925,6 @@ Date
 ```
 
 The synchronization engine, however, remains configurable and can be adapted to other business datasets.
-
----
-
-# 🔒 Privacy & Data Handling
-
-BizSync is primarily designed to run locally.
-
-When another user runs BizSync:
-
-```text
-Their CSV / Excel
-       ↓
-Their BizSync instance
-       ↓
-Their Google account
-       ↓
-Their Google Sheet
-```
-
-Their local synchronization environment is separate from the developer's local environment.
-
-The GitHub repository intentionally does not contain:
-
-- OAuth credentials
-- OAuth refresh tokens
-- Gemini API keys
-- local synchronization history
-- temporary uploads
-- saved private configurations
-- private customer/business records
-
-### Important
-
-Do not commit real:
-
-- customer information
-- financial information
-- order records
-- private business data
-- authentication credentials
-
-Use synthetic/demo data for public examples.
-
-### External Services
-
-When Google Sheets or Gemini functionality is used, relevant data may be sent to those external services as required by the selected workflow.
-
-Users should understand the data-sharing implications of connected external services before using BizSync with sensitive business information.
 
 ---
 
