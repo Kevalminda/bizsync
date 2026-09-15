@@ -8,21 +8,21 @@ BizSync is a configurable business-data synchronization tool built for recurring
 
 It helps users:
 
-- import business exports
-- normalize inconsistent column names
-- map source fields to target fields
-- use AI assistance for ambiguous mappings
-- compare records with existing Google Sheet data
-- identify new, updated, unchanged, and skipped records
-- prevent duplicate records
-- maintain synchronization history
-- reuse saved synchronization configurations
+- Import business exports
+- Normalize inconsistent column names
+- Map source fields to target fields
+- Use AI assistance for ambiguous mappings
+- Compare records with existing Google Sheet data
+- Identify new, updated, unchanged, and skipped records
+- Prevent duplicate records
+- Maintain synchronization history
+- Reuse saved synchronization configurations
 
 The initial use case focuses on marketplace-style exports such as Flipkart CSV files, while the underlying synchronization engine is designed to support different business datasets and configurable schemas.
 
 ---
 
-## 🚀 Why BizSync?
+# 🚀 Why BizSync?
 
 Many businesses receive recurring data exports from marketplaces, inventory systems, CRMs, accounting platforms, or other tools.
 
@@ -126,16 +126,16 @@ Deterministic Mapper
 High-confidence match?
       / \
     Yes   No
-    │      │
-    ▼      ▼
- Accept   AI Assistance
+     │     │
+     ▼     ▼
+  Accept   AI Assistance
               │
               ▼
-       Confidence Evaluation
+        Confidence Evaluation
               │
-        ┌─────┴─────┐
-        ▼           ▼
-      Accept      Review
+          ┌───┴───┐
+          ▼       ▼
+        Accept   Review
 ```
 
 AI is primarily used when column names are ambiguous.
@@ -155,11 +155,11 @@ BizSync can interpret these into business-oriented target fields such as:
 
 ```text
 buyer_ref         → Order No.
-article            → SKU ID
-description        → Product Name
-units_dispatched   → Quantity
-gross_total        → Amount
-recorded_at        → Date
+article           → SKU ID
+description       → Product Name
+units_dispatched  → Quantity
+gross_total       → Amount
+recorded_at       → Date
 ```
 
 AI suggestions include confidence information and reasoning.
@@ -227,9 +227,9 @@ When the selected worksheet is empty:
 ```text
 Configured Target Fields
           ↓
-     Create Headers
+      Create Headers
           ↓
-    Insert Initial Data
+     Insert Initial Data
 ```
 
 BizSync automatically creates the destination headers based on the target schema.
@@ -248,6 +248,8 @@ Order-No
 ```
 
 can be normalized for matching.
+
+Minor naming variations and spelling differences can also be considered during schema matching.
 
 Genuinely missing target columns can be added without deleting existing destination data.
 
@@ -292,10 +294,12 @@ can identify a unique business record.
 
 Unique keys help BizSync:
 
-- identify existing records
-- update the correct destination record
-- prevent repeated insertion
-- skip duplicate incoming records
+- Identify existing records
+- Update the correct destination record
+- Prevent repeated insertion
+- Skip duplicate incoming records
+
+This protects against blindly appending the same records during repeated imports.
 
 ---
 
@@ -307,7 +311,18 @@ The system can identify possible duplicate records and use AI-assisted verificat
 
 Possible duplicate cases can be surfaced for review instead of being silently inserted.
 
-This provides an additional safety layer around automated data synchronization.
+Duplicate analysis can display:
+
+- Incoming record
+- Existing record
+- Field-by-field comparison
+- Similarity score
+- Matching fields
+- Different fields
+- AI verification when available
+- Recommendation for review
+
+Similarity warnings are intended as decision support and do not represent a guaranteed duplicate determination.
 
 ---
 
@@ -467,26 +482,26 @@ The intended architecture is:
              │   Backend   │
              └──────┬──────┘
                     │
-          ┌─────────┴─────────┐
-          ▼                   ▼
-   Google APIs             Gemini API
-          │                   │
-          ▼                   ▼
+           ┌────────┴────────┐
+           ▼                 ▼
+    Google APIs           Gemini API
+           │                 │
+           ▼                 ▼
  User's Google Sheet    AI Assistance
 ```
 
 Important security principles:
 
-- credentials remain server-side
+- Credentials remain server-side
 - Gemini API keys are provided through environment variables
 - OAuth tokens are kept outside the repository
-- local sync history is excluded from Git
-- temporary uploads are excluded from Git
-- saved private configurations are excluded from Git
-- the project root is not exposed as a static directory
-- development CORS is restricted to trusted local origins
-- public CI does not require private Google OAuth credentials
-- credentials and API keys are never stored in frontend source code
+- Local sync history is excluded from Git
+- Temporary uploads are excluded from Git
+- Saved private configurations are excluded from Git
+- The project root is not exposed as a static directory
+- Development CORS is restricted to trusted local origins
+- Public CI does not require private Google OAuth credentials
+- Credentials and API keys are never stored in frontend source code
 
 ---
 
@@ -502,7 +517,7 @@ The BizSync dashboard provides an overview of synchronization activity, includin
 
 ---
 
-## New Synchronization
+## New Synchronization — Upload
 
 The synchronization wizard guides the user through the workflow from file upload to execution.
 
@@ -573,12 +588,15 @@ The history dashboard provides an audit trail of previous synchronization runs a
 - Python
 - FastAPI
 - Pandas
+- Pydantic
+- RapidFuzz
 
 ## Google Integration
 
 - Google Sheets API
 - Google Drive API
 - Google OAuth 2.0
+- GSpread
 
 ## AI
 
@@ -601,6 +619,7 @@ The history dashboard provides an audit trail of previous synchronization runs a
 - GitHub
 - GitHub Actions
 - Python virtual environment
+- Python unittest
 
 ---
 
@@ -635,19 +654,14 @@ bizsync/
 │   │
 │   ├── audit_log.py
 │   ├── config_checker.py
-│   ├── deduplication.py
 │   ├── ingestion.py
-│   ├── list_google_sheets.py
-│   ├── mapping.py
-│   ├── models.py
 │   ├── normalization.py
-│   ├── pipeline.py
 │   ├── schema_mapper.py
 │   ├── sync_engine.py
-│   ├── validation.py
 │   └── test_*.py
 │
 ├── configs/
+│   └── saved/
 │
 ├── docs/
 │   ├── ROADMAP.md
@@ -681,32 +695,87 @@ bizsync/
 
 # ⚙️ Local Installation
 
-## 1. Clone the repository
+## Prerequisites
+
+You will need:
+
+- Python 3.11 or newer
+- Git
+- A Google account if you want to test Google Sheets synchronization
+- A Gemini API key if you want to test AI-assisted features
+
+---
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Kevalminda/bizsync.git
 cd bizsync
 ```
 
-## 2. Create a virtual environment
+---
 
-Windows:
+## 2. Create a Virtual Environment
+
+### Windows
 
 ```powershell
 python -m venv .venv
-```
-
-Activate it:
-
-```powershell
 .venv\Scripts\activate
 ```
 
-## 3. Install dependencies
+### macOS / Linux
 
-```powershell
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
+
+---
+
+# 🧪 Quick Demo / Local Testing
+
+BizSync includes sample datasets that can be used to explore the workflow without using real business data.
+
+Sample files include examples for:
+
+- Normal field mapping
+- Ambiguous field mapping
+- Duplicate detection
+- Updated records
+- New records
+
+A basic test flow is:
+
+```text
+Upload Sample CSV
+       ↓
+Configure Target Fields
+       ↓
+Review Mapping Suggestions
+       ↓
+Connect Google Sheet
+       ↓
+Review Synchronization Preview
+       ↓
+Inspect Duplicate Intelligence
+       ↓
+Execute Synchronization
+       ↓
+Review Sync History
+```
+
+The core application can be explored locally using the included sample data.
+
+Google Sheets synchronization requires your own Google OAuth configuration.
 
 ---
 
@@ -754,7 +823,15 @@ Example for Windows PowerShell:
 $env:GEMINI_API_KEY="YOUR_API_KEY"
 ```
 
+Example for macOS/Linux:
+
+```bash
+export GEMINI_API_KEY="YOUR_API_KEY"
+```
+
 The API key should never be hard-coded into application source code or frontend files.
+
+AI features are intended as an assistance layer. When AI assistance is unavailable, BizSync can use deterministic/local matching and manual review where supported.
 
 ---
 
@@ -762,7 +839,7 @@ The API key should never be hard-coded into application source code or frontend 
 
 Start the FastAPI application:
 
-```powershell
+```bash
 python -m uvicorn app.api.main:app --reload --port 8000
 ```
 
@@ -827,6 +904,114 @@ Open Dashboard or Sync History to review the synchronization result.
 
 ---
 
+# 🔄 Synchronization Logic
+
+BizSync does not simply append every uploaded record.
+
+For each incoming record, it determines whether the record is:
+
+```text
+NEW
+UPDATED
+UNCHANGED
+SKIPPED
+```
+
+### Example
+
+Existing Google Sheet:
+
+| Order No. | Product Name | Quantity |
+|---|---|---:|
+| TX001 | Premium Chips | 3 |
+| TX002 | Masala Chips | 3 |
+
+Incoming file:
+
+| Order No. | Product Name | Quantity |
+|---|---|---:|
+| TX001 | Premium Chips | 3 |
+| TX002 | Masala Chips | 4 |
+| TX003 | Cheese Chips | 1 |
+
+BizSync can classify the records as:
+
+```text
+TX001 → UNCHANGED
+TX002 → UPDATED
+TX003 → NEW
+```
+
+Only the required changes are written to the destination.
+
+---
+
+# 🔑 Unique-Key Matching
+
+Users can configure one or more fields as unique keys.
+
+For example:
+
+```text
+Order No. + SKU ID
+```
+
+These fields are used to determine whether an incoming record corresponds to an existing destination record.
+
+This prevents a repeated upload from blindly creating duplicate rows.
+
+---
+
+# 🧠 AI Safety Model
+
+AI-assisted mapping follows a confidence-based approach.
+
+Conceptually:
+
+```text
+                 Source Column
+                       │
+                       ▼
+              Local Schema Matching
+                       │
+             ┌─────────┴─────────┐
+             │                   │
+        High Confidence      Ambiguous
+             │                   │
+             ▼                   ▼
+       Accept Suggestion     Gemini Assist
+                                 │
+                       ┌─────────┴─────────┐
+                       │                   │
+                  High Confidence      Lower Confidence
+                       │                   │
+                       ▼                   ▼
+                   Suggest            Manual Review
+```
+
+This prevents low-confidence AI guesses from silently becoming synchronization decisions.
+
+---
+
+# 🛡️ Safety Considerations
+
+BizSync includes several safeguards:
+
+- Required-field validation
+- Unique-key matching
+- Duplicate protection
+- Record classification before execution
+- Confidence-based mapping
+- Manual mapping override
+- Preview before synchronization
+- Invalid-record handling
+- Synchronization history
+- Local fallback when AI assistance is unavailable
+
+The goal is to make synchronization reviewable and predictable rather than blindly automated.
+
+---
+
 # 🧪 Testing
 
 BizSync includes automated offline unit tests and separate integration tests.
@@ -837,19 +1022,25 @@ The public GitHub Actions workflow runs tests that do not require private Google
 
 Run the same offline test suite locally with:
 
-```powershell
+```bash
 python -m unittest -v app.test_api app.test_duplicate_detector
 ```
 
 These tests cover:
 
 - API health behavior
-- configuration endpoint behavior
-- sample-data loading
-- field-mapping endpoint behavior
-- duplicate detection
+- Configuration endpoint behavior
+- Sample-data loading
+- Field-mapping endpoint behavior
+- Duplicate detection
 
 The CI workflow also compiles the Python application before running the tests.
+
+Compile check:
+
+```bash
+python -m compileall -q app
+```
 
 ---
 
@@ -884,10 +1075,62 @@ These files must never be committed to the repository.
                  │                         │
                  ▼                         ▼
           GitHub Actions CI         Local Environment
-                 │                 + Google OAuth
-                 ▼                 + Google Sheets
-              ✅ Safe CI
+                                   + Google OAuth
+                                   + Google Sheets
+                 │
+                 ▼
+              Safe CI
 ```
+
+---
+
+# 🔒 Security
+
+Sensitive local credentials are intentionally excluded from the repository.
+
+The `.gitignore` includes:
+
+```text
+credentials.json
+authorized_user.json
+token.json
+.env
+.env.*
+```
+
+Local runtime data such as logs, saved configurations, and temporary uploads are also excluded where appropriate.
+
+### Important
+
+Never commit:
+
+- Google OAuth credentials
+- OAuth tokens
+- Gemini API keys
+- `.env` files containing secrets
+- Personal business data
+- Private customer information
+
+---
+
+# ⚠️ Known Limitations
+
+BizSync is currently a local portfolio/MVP application, not a production SaaS platform.
+
+Current limitations include:
+
+- No hosted production environment
+- Google Sheets integration requires user-provided OAuth configuration
+- Gemini features require an API key
+- Processing is currently memory-based
+- Duplicate intelligence provides similarity warnings rather than guaranteed duplicate decisions
+- No multi-user authentication
+- No user-level data isolation
+- Limited Google Sheets concurrency/conflict handling
+- Large-scale production workloads would require further optimization
+- More extensive validation would be required for highly varied business datasets
+
+These limitations are areas for future development.
 
 ---
 
@@ -902,15 +1145,15 @@ Marketplace Export
         ↓
       CSV File
         ↓
-     BizSync
+      BizSync
         ↓
-Field Mapping
+    Field Mapping
         ↓
-Record Comparison
+   Record Comparison
         ↓
-Duplicate Protection
+  Duplicate Protection
         ↓
-Google Sheets
+   Google Sheets
 ```
 
 A typical dataset might contain:
@@ -942,7 +1185,7 @@ BizSync is being developed as a practical automation and data-engineering projec
 - API integration
 - Google Sheets automation
 - Auditability
-- Secure local execution
+- Security-conscious application design
 
 ---
 
@@ -972,36 +1215,113 @@ The project was developed as a practical synchronization workflow rather than on
 
 It includes:
 
-- configurable target schemas
-- deterministic and AI-assisted mapping
-- confidence-based mapping safety
-- record-level synchronization logic
-- unique-key protection
-- duplicate intelligence
+- Configurable target schemas
+- Deterministic and AI-assisted mapping
+- Confidence-based mapping safety
+- Record-level synchronization logic
+- Unique-key protection
+- Duplicate intelligence
 - Google Sheets integration
-- saved configurations
-- synchronization history
-- responsive UI
-- bilingual interface
-- automated CI verification
+- Saved configurations
+- Synchronization history
+- Responsive UI
+- Bilingual interface
+- Automated CI verification
 
 ---
 
-# 🚧 Roadmap
+# 📊 Project Status
 
-Planned improvements include:
+**Status:** Portfolio / MVP
 
-- Additional destination connectors
-- Additional business-data templates
-- More advanced schema matching
-- Improved duplicate intelligence
-- Scheduled synchronization
-- Enhanced reporting
-- Hosted deployment
-- Multi-user support
-- Additional localization options
+The current implementation demonstrates:
+
+- End-to-end CSV/Excel ingestion
+- Configurable schema mapping
+- AI-assisted mapping
+- Google OAuth integration
+- Google Sheets synchronization
+- Deterministic record comparison
+- Duplicate protection
+- Duplicate intelligence
+- Saved configurations
+- Synchronization history
+- Automated CI testing
+
+The project is functional for local experimentation and portfolio demonstration, while production-scale deployment would require additional infrastructure and security work.
+
+---
+
+# 🗺️ Roadmap
+
+Potential future improvements include:
+
+- [ ] Hosted web application
+- [ ] User authentication
+- [ ] Multi-user data isolation
+- [ ] Database-backed configuration storage
+- [ ] Secure cloud credential management
+- [ ] More connectors beyond Google Sheets
+- [ ] Scheduled synchronization
+- [ ] Webhook/event-based synchronization
+- [ ] Advanced data validation
+- [ ] Large-file / chunked processing
+- [ ] Improved duplicate resolution
+- [ ] More comprehensive integration testing
+- [ ] Deployment monitoring and observability
 
 See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the current roadmap.
+
+---
+
+# 🔮 Future Connector Architecture
+
+BizSync is designed around a connector-based approach so that the destination does not have to remain limited to Google Sheets.
+
+Conceptually:
+
+```text
+                    BizSync
+                       │
+              Synchronization Engine
+                       │
+          ┌────────────┼────────────┐
+          │            │            │
+          ▼            ▼            ▼
+    Google Sheets     CSV        Future APIs
+                                  / Databases
+```
+
+This makes it possible to extend the system toward other business-data destinations in the future.
+
+---
+
+# 🤝 Contributing
+
+Suggestions, bug reports, and improvements are welcome.
+
+If you find an issue:
+
+1. Open an issue in the repository
+2. Describe the problem
+3. Include reproducible steps where possible
+4. Mention your environment and relevant error messages
+
+For code contributions:
+
+```bash
+git checkout -b feature/your-feature
+```
+
+Make your changes, test them locally, and submit a pull request.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+See [LICENSE](LICENSE) for details.
 
 ---
 
@@ -1011,16 +1331,18 @@ See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the current roadmap.
 
 B.Tech — Information Technology
 
-GitHub:  
-https://github.com/Kevalminda
+GitHub: [@Kevalminda](https://github.com/Kevalminda)
 
-Project Repository:  
+Project Repository:
+
 https://github.com/Kevalminda/bizsync
 
 ---
 
-# 📄 License
+## ⭐ If You Find This Project Interesting
 
-BizSync is released under the MIT License.
+Feel free to explore the code, test the sample workflows, open an issue, or suggest improvements.
 
-See [`LICENSE`](LICENSE) for the full license text.
+Built as a practical project to explore:
+
+**Python • FastAPI • Data Synchronization • Google APIs • OAuth • Gemini • Automation • Testing**
